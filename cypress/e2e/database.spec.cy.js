@@ -30,7 +30,7 @@ describe('Banco de Dados', () => {
   // clicar no atualizar (refresh)
     cy.get('[data-variant="icon"]').eq(2).click() // ajustar seletor
 
-  // BUG: deveria existir
+  // valida comportamento esperado (teste deve falhar devido ao bug)
     cy.contains('Teste Refresh').should('be.visible')
 })
 })
