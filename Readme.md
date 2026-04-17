@@ -1,82 +1,118 @@
-# 🧪 Teste QA - Colmeia
+# 🧪 QA Challenge - Colmeia (Automação com Cypress)
 
-Este repositório contém a execução de testes manuais e automatizados realizados para o desafio técnico de QA da Colmeia.
-
----
-
-## 📌 Objetivo
-
-Explorar a aplicação fornecida, identificar inconsistências e garantir a qualidade do sistema através de:
-
-* Testes exploratórios
-* Criação de casos de teste
-* Registro de bugs
-* Automação de testes com Cypress
+Este projeto apresenta a automação de testes end-to-end utilizando **Cypress**, com foco na validação de funcionalidades críticas e identificação de comportamentos inesperados na aplicação.
 
 ---
 
-## 🔍 Escopo dos Testes
+## 🎯 Objetivo
 
-### 🔐 Login
+Validar o sistema através de testes automatizados, garantindo:
 
-* Validação de campos obrigatórios
-* Validação de formato de email
-* Login com credenciais válidas e inválidas
-* Comportamento do sistema após autenticação
-
-### 📊 Dashboard
-
-* Carregamento da tela
-* Navegação entre menus
-* Interações com elementos visíveis
-
-### 🗄️ Banco de Dados
-
-* Criação de bancos
-* Listagem de dados
-* Busca
-* Atualização (refresh)
-* Arquivamento e exclusão
+* Cobertura de fluxos principais
+* Validação de regras de negócio
+* Identificação e evidência de bugs
+* Organização e boas práticas de automação
 
 ---
 
-## 🐞 Bugs Encontrados
-
-Foram identificados diversos problemas, incluindo:
-
-* ❌ Login com erro mesmo com credenciais válidas
-* ❌ Dados desaparecem ao atualizar (refresh)
-* ❌ Permite criação de nomes duplicados
-* ❌ Arquivamento não funciona corretamente
-* ❌ Link de recuperação de senha não funcional
-
-📄 Detalhes completos em: `bugs.md`
-
----
-
-## 🧪 Casos de Teste
-
-Os cenários de teste foram documentados com base em testes exploratórios, cobrindo fluxos principais e validações do sistema.
-
-📄 Ver arquivo: `test-cases.md`
-
----
-
-## 🤖 Testes Automatizados
-
-Foram implementados testes automatizados utilizando Cypress para validar funcionalidades principais:
-
-* Login
-* Criação de banco de dados
-* Validação de comportamento do sistema
-
----
-
-## ⚙️ Tecnologias Utilizadas
+## 🧰 Tecnologias Utilizadas
 
 * Cypress
 * JavaScript
 * Node.js
+* Page Object Pattern
+
+---
+
+## 📂 Estrutura do Projeto
+
+cypress/ 
+├── e2e/ 
+│    ├── login.cy.js 
+│    ├── database.cy.js 
+│
+├── pages/ 
+│    ├── loginPage.js 
+│    ├── databasePage.js 
+│ 
+├── fixtures/ 
+│    ├── UserData.json
+
+
+---
+
+## 🧠 Estratégia de Automação
+
+Os testes foram desenvolvidos com base em uma abordagem **exploratória + automatizada**, priorizando:
+
+* Fluxos críticos da aplicação (login e gerenciamento de banco)
+* Cenários positivos e negativos
+* Identificação de inconsistências reais
+
+A automação foi estruturada utilizando **Page Object Pattern**, promovendo:
+
+* Reutilização de código
+* Facilidade de manutenção
+* Separação entre lógica de teste e interação com a interface
+
+---
+
+## 🔐 Funcionalidades Testadas
+
+### Login
+
+* Login com credenciais válidas
+* Login com credenciais inválidas
+* Validação de mensagens de erro
+
+### Banco de Dados
+
+* Criação de banco
+* Listagem de bancos
+* Atualização (refresh)
+* Arquivamento
+* Validação de duplicidade
+
+---
+
+## 🐞 Bugs Identificados
+
+### ❌ BUG 1 — Login inconsistente
+
+* Mesmo com credenciais válidas, o sistema exibe:
+  **"Seu login está incorreto"**
+* Após clicar em **"Continuar"**, o acesso ao dashboard é realizado
+
+---
+
+### ❌ BUG 2 — Dados desaparecem ao atualizar
+
+* Após criar um banco de dados
+* Ao clicar no botão de refresh
+* Os dados desaparecem da lista
+
+---
+
+### ❌ BUG 3 — Permite criação de bancos duplicados
+
+* O sistema permite criar múltiplos bancos com o mesmo nome
+* Não há validação de unicidade
+
+---
+
+### ❌ BUG 4 — Arquivamento incorreto
+
+* Ao arquivar um banco de dados
+* O item não aparece na lista de arquivados
+* O sistema remove permanentemente
+
+---
+
+## ⚠️ Observações Importantes
+
+* Alguns testes automatizados foram desenvolvidos para **evidenciar bugs**
+* Esses testes podem falhar propositalmente, pois validam o comportamento esperado do sistema
+* A falha dos testes indica inconsistências reais da aplicação
 
 ---
 
@@ -84,64 +120,36 @@ Foram implementados testes automatizados utilizando Cypress para validar funcion
 
 ### 1. Clonar repositório
 
-```bash
+bash
 git clone https://github.com/Brunnobs/teste-QA.git
-```
 
 ### 2. Instalar dependências
-
-```bash
+bash
 npm install
-```
-
 ### 3. Executar Cypress
-
-```bash
+bash
 npx cypress open
-```
-
 ou modo headless:
-
-```bash
+bash
 npx cypress run
-```
 
----
+--- 
 
-## 📂 Estrutura do Projeto
+## 📌 Boas Práticas Aplicadas 
+* Page Object Pattern
+* Separação de responsabilidades
+* Uso de fixtures para dados de teste *
+* Testes claros e objetivos *
+*  Validação de comportamento esperado vs atual
 
-```
-qa-colmeia-test
- ├── README.md
- ├── bugs.md
- ├── test-cases.md
- ├── cypress/
- │    └── e2e/
- │         ├── login.spec.js
- │         └── database.spec.js
- └── evidencias/
-```
+--- 
 
----
+## 👨‍💻 Autor Bruno Barbosa de Souza 🔗 https://github.com/Brunnobs -
 
-## 📸 Evidências
+--- 
 
-As evidências dos bugs (prints) estão disponíveis na pasta:
-
-📁 `evidencias/`
-
----
-
-## 👨‍💻 Autor
-
-Bruno Barbosa de Souza
-🔗 GitHub: https://github.com/Brunnobs
-🔗 LinkedIn: https://linkedin.com/in/brunobbss
-
----
-
-## 🚀 Considerações Finais
-
-O projeto foi desenvolvido com foco em identificar falhas reais do sistema, documentar de forma clara e aplicar boas práticas de QA.
-
-Além dos testes manuais, foram adicionados testes automatizados para reforçar a validação das funcionalidades críticas.
+## 🚀 Considerações Finais O projeto foi desenvolvido com foco em demonstrar habilidades práticas em QA, incluindo: 
+* Pensamento crítico *
+* Identificação de falhas reais *
+* Automação de testes *
+* Organização e clareza na documentação A proposta foi não apenas validar o sistema, mas também evidenciar problemas relevantes que impactam a experiência do usuário.
