@@ -26,17 +26,17 @@ Validar o sistema através de testes automatizados, garantindo:
 
 ## 📂 Estrutura do Projeto
 
-cypress/ 
-├── e2e/ 
-│    ├── login.cy.js 
-│    ├── database.cy.js 
-│
-├── pages/ 
-│    ├── loginPage.js 
-│    ├── databasePage.js 
-│ 
-├── fixtures/ 
-│    ├── UserData.json
+cypress/
+ ├── e2e/
+ │    ├── login.cy.js
+ │    ├── database.cy.js
+ │
+ ├── pages/
+ │    ├── loginPage.js
+ │    ├── databasePage.js
+ │
+ ├── fixtures/
+ │    ├── UserData.json
 
 
 ---
