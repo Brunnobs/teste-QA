@@ -29,7 +29,7 @@ class DatabasePage {
   }
 
   validateDatabaseCreated(name) {
-    cy.contains(name).should('be.visible')
+    cy.get('tbody tr').should('contain', name)
   }
 
   clickRefresh() {
@@ -47,7 +47,13 @@ class DatabasePage {
   goToArchived() {
     cy.contains('Arquivados').click()
   }
-
+  
+  validateDuplicateDatabase(name) {
+    cy.get('tbody tr').then(($rows) => {
+    const filtered = [...$rows].filter(row => row.innerText.includes(name))
+    expect(filtered.length).to.equal(1)
+    })
+  }
 }
 
 export default DatabasePage

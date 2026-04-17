@@ -15,7 +15,7 @@ describe('Banco de Dados', () => {
     cy.get("a[href='/dashboard/campanha/bancos-de-dados']").click()
   })
 
-  it('Deve criar um novo banco de dados', () => {
+  it('Deve criar um novo banco de dados com sucesso', () => {
     
     const name = 'Banco Teste'
 
@@ -34,7 +34,7 @@ describe('Banco de Dados', () => {
 
      // validação do comportamento esperado
      // teste falha devido a bug identificado na aplicação
-    cy.contains(name).should('be.visible')
+    cy.get('tbody tr').should('contain', name)
         
   })
 
@@ -45,13 +45,11 @@ describe('Banco de Dados', () => {
     databasePage.validateDatabaseCreated(name)
     databasePage.createDatabase(name)
     databasePage.validateDatabaseCreated(name)
-
-    cy.get('tbody tr').then(($rows) => {
-      const filtered = [...$rows].filter(row => row.innerText.includes(name))
-
-      // BUG: deveria permitir apenas um com o mesmo nome, comportamento inesperado identificado.
-      expect(filtered.length).to.equal(1)
-    })
+       
+    // BUG: deveria permitir apenas um com o mesmo nome, comportamento inesperado identificado.
+    databasePage.validateDuplicateDatabase(name)
+    
+        
   })
 
 
@@ -64,7 +62,7 @@ describe('Banco de Dados', () => {
     databasePage.goToArchived()
 
     // BUG: deveria aparecer o banco arquivado, comportamento inesperado identificado.
-    cy.contains(name).should('be.visible')
+    cy.get('tbody tr').should('contain', name)
   })
 
 })
