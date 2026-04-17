@@ -1,18 +1,36 @@
-describe('Login', () => {
-  it('Deve realizar login com sucesso', () => {
-    cy.visit('https://teste-colmeia-qa.colmeia-corp.com/')
+import userData from '../fixtures/UserData.json'
+import LoginPage from '../pages/loginPage.js'
 
-    cy.get('input[type="email"]').type('qa@test.com')
-    cy.get('input[type="password"]').type('123456') // ajusta se necessário
+const loginPage = new LoginPage()
 
-    cy.contains('Entrar').click()
+describe('Login - Validação de Autenticação', () => {
 
-    // valida mensagem bugada (comportamento atual)
+  beforeEach(() => {
+    cy.visit('/')
+  })
+
+  it('Deve exibir erro ao tentar login com credenciais inválidas', () => {
+    loginPage.loginWithUser(userData.userFail.username, userData.userFail.password)
+    loginPage.checkAccessInvalid()
+  })
+
+
+  it('Deve realizar login com sucesso e acessar o dashboard', () => {
+    loginPage.loginWithUser(userData.userSuccess.username, userData.userSuccess.password)
+    
+    // comportamento inesperado identificado durante o teste
     cy.contains('Seu login está incorreto').should('be.visible')
-
     cy.contains('Continuar').click()
-
-    // valida acesso ao dashboard
     cy.url().should('include', 'dashboard')
   })
+
+  
+  it('BUG: Sistema exibe erro mesmo com credenciais válidas', () => {
+    loginPage.loginWithUser(userData.userSuccess.username, userData.userSuccess.password)
+
+    // BUG: mensagem não deveria aparecer, comportamento inesperado identificado.
+    cy.contains('Seu login está incorreto').should('be.visible')
+    
+  })
+
 })

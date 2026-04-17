@@ -1,36 +1,70 @@
+import userData from '../fixtures/UserData.json'
+import LoginPage from '../pages/loginPage.js'
+import DatabasePage from '../pages/databasePage'
+
+const loginPage = new LoginPage()
+const databasePage = new DatabasePage()
+
+
 describe('Banco de Dados', () => {
   beforeEach('Login',() => {
-    cy.visit('https://teste-colmeia-qa.colmeia-corp.com/')
-
-    cy.get('input[type="email"]').type('qa@test.com')
-    cy.get('input[type="password"]').type('123456')
-    cy.contains('Entrar').click()
+    cy.visit('/')
+    loginPage.loginWithUser(userData.userSuccess.username, userData.userSuccess.password)
     cy.contains('Continuar').click()
+    cy.get("[type='button']").eq(0).click()
+    cy.get("a[href='/dashboard/campanha/bancos-de-dados']").click()
   })
 
   it('Deve criar um novo banco de dados', () => {
-    cy.get(".cursor-pointer").click()
-    cy.get("a[href='/dashboard/campanha/bancos-de-dados']").click() // clicar no menu de banco de dados
-    cy.contains('Criar').click()
-    cy.get('.ng-invalid').type('Banco criado automaticamente')
-    cy.contains('Salvar').click()
+    
+    const name = 'Banco Teste'
 
-    // validar que aparece na lista
-    cy.contains('Banco criado automaticamente').should('be.visible')
+    databasePage.createDatabase(name)
+    databasePage.validateDatabaseCreated(name)
+    
   })
 
   it('BUG: Dados somem ao atualizar', () => {
-    cy.get(".cursor-pointer").click()
-    cy.get("a[href='/dashboard/campanha/bancos-de-dados']").click() // clicar no menu de banco de dados
-    cy.contains('Criar').click()
-    cy.get('.ng-invalid').type('Teste Refresh')
-    cy.contains('Salvar').click()
-    cy.contains('Teste Refresh').should('be.visible')
+    
+    const name = 'Teste Refresh'
 
-  // clicar no atualizar (refresh)
-    cy.get('[data-variant="icon"]').eq(2).click() // ajustar seletor
+    databasePage.createDatabase(name)
+    databasePage.validateDatabaseCreated(name)
+    databasePage.clickRefresh()
 
-  // valida comportamento esperado (teste deve falhar devido ao bug)
-    cy.contains('Teste Refresh').should('be.visible')
-})
+     // validação do comportamento esperado
+     // teste falha devido a bug identificado na aplicação
+    cy.contains(name).should('be.visible')
+        
+  })
+
+  it('BUG: Permite criar bancos duplicados', () => {
+    const name = 'Banco Duplicado'
+
+    databasePage.createDatabase(name)
+    databasePage.validateDatabaseCreated(name)
+    databasePage.createDatabase(name)
+    databasePage.validateDatabaseCreated(name)
+
+    cy.get('tbody tr').then(($rows) => {
+      const filtered = [...$rows].filter(row => row.innerText.includes(name))
+
+      // BUG: deveria permitir apenas um com o mesmo nome, comportamento inesperado identificado.
+      expect(filtered.length).to.equal(1)
+    })
+  })
+
+
+  it('BUG: Arquivar não envia para lista de arquivados', () => {
+    const name = 'Banco Arquivar'
+
+    databasePage.createDatabase(name)
+
+    databasePage.clickArchive()
+    databasePage.goToArchived()
+
+    // BUG: deveria aparecer o banco arquivado, comportamento inesperado identificado.
+    cy.contains(name).should('be.visible')
+  })
+
 })
