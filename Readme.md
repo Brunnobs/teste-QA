@@ -1,4 +1,4 @@
-# 🧪 QA Challenge - Colmeia (Automação com Cypress)
+# 🧪 QA - Colmeia (Automação com Cypress)
 
 Este projeto apresenta a automação de testes end-to-end utilizando **Cypress**, com foco na validação de funcionalidades críticas e identificação de comportamentos inesperados na aplicação.
 
